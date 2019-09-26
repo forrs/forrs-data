@@ -1,0 +1,27 @@
+CREATE TABLE "User" (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR (32) UNIQUE NOT NULL,
+  pw_hash VARCHAR(64) NOT NULL,
+  registered_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+CREATE TABLE Category (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR (64) UNIQUE NOT NULL
+);
+CREATE TABLE Topic (
+  id BIGSERIAL PRIMARY KEY,
+  category_id BIGINT REFERENCES Category(id) NOT NULL,
+  creator_id BIGINT REFERENCES "User"(id) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  edited_at TIMESTAMP DEFAULT NULL,
+  title VARCHAR(128) NOT NULL
+);
+CREATE TABLE Post (
+  topic_id BIGINT REFERENCES Topic(id),
+  id SERIAL,
+  author_id BIGINT REFERENCES "User"(id) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  edited_at TIMESTAMP DEFAULT NULL,
+  content TEXT NOT NULL,
+  PRIMARY KEY (topic_id, id)
+);
