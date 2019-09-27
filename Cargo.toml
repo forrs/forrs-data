@@ -1,11 +1,14 @@
 [package]
 name = "forrs-data"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Follpvosten <wolfi@karpador.xyz>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = []
+postgres = ["tokio-postgres"]
 
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
+tokio-postgres = { version = "0.4.0-rc.3", default-features = false, features = ["with-chrono-0_4"], optional = true }
