@@ -1,60 +1,55 @@
 use crate::model::*;
-use tokio_postgres::{Error, Row};
+use mysql_async::{FromRowError, Row};
 
 pub trait FromRow: Sized {
-    fn from_row(row: &Row) -> Result<Self, Error>;
+    fn from_row(row: Row) -> Result<Self, FromRowError>;
 }
 
 impl FromRow for User {
-    fn from_row(row: &Row) -> Result<Self, Error> {
+    fn from_row(row: Row) -> Result<Self, FromRowError> {
+        let (id, name, pw_hash, registered_at) = mysql_async::from_row_opt(row)?;
         Ok(User {
-            id: row.try_get("id")?,
-            name: row.try_get("name")?,
-            pw_hash: row.try_get("pw_hash")?,
-            registered_at: row.try_get("registered_at")?,
+            id,
+            name,
+            pw_hash,
+            registered_at,
         })
     }
 }
 
 impl FromRow for Category {
-    fn from_row(row: &Row) -> Result<Self, Error> {
-        Ok(Category {
-            id: row.try_get("id")?,
-            name: row.try_get("name")?,
-        })
+    fn from_row(row: Row) -> Result<Self, FromRowError> {
+        let (id, name) = mysql_async::from_row_opt(row)?;
+        Ok(Category { id, name })
     }
 }
 
 impl FromRow for Topic {
-    fn from_row(row: &Row) -> Result<Self, Error> {
+    fn from_row(row: Row) -> Result<Self, FromRowError> {
+        let (id, category_id, creator_id, created_at, edited_at, title) =
+            mysql_async::from_row_opt(row)?;
         Ok(Topic {
-            id: row.try_get("id")?,
-            category_id: row.try_get("category_id")?,
-            creator_id: row.try_get("creator_id")?,
-            created_at: row.try_get("created_at")?,
-            edited_at: row.try_get("edited_at")?,
-            title: row.try_get("title")?,
-        })
-    }
-}
-
-impl FromRow for PostId {
-    fn from_row(row: &Row) -> Result<Self, Error> {
-        Ok(PostId {
-            topic_id: row.try_get("topic_id")?,
-            id: row.try_get("id")?,
+            id,
+            category_id,
+            creator_id,
+            created_at,
+            edited_at,
+            title,
         })
     }
 }
 
 impl FromRow for Post {
-    fn from_row(row: &Row) -> Result<Self, Error> {
+    fn from_row(row: Row) -> Result<Self, FromRowError> {
+        let (topic_id, id, author_id, created_at, edited_at, content) =
+            mysql_async::from_row_opt(row)?;
+        let id = PostId { id, topic_id };
         Ok(Post {
-            id: PostId::from_row(row)?,
-            author_id: row.try_get("author_id")?,
-            created_at: row.try_get("created_at")?,
-            edited_at: row.try_get("edited_at")?,
-            content: row.try_get("content")?,
+            id,
+            author_id,
+            created_at,
+            edited_at,
+            content,
         })
     }
 }

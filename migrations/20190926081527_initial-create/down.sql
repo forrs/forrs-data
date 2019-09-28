@@ -1,5 +1,4 @@
 DROP TABLE Post;
-DROP SEQUENCE post_id_seq;
 DROP TABLE Topic;
 DROP TABLE Category;
-DROP TABLE "User";
+DROP TABLE User;

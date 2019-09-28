@@ -1,5 +1,5 @@
 # Required, do not edit
-database_type = "postgres"
+database_type = "mysql"
 
 # Required database info
 database_name = ""
@@ -8,7 +8,7 @@ database_password = ""
 
 # Configurable database info
 database_host = "localhost"
-database_port = "5432"
+database_port = "3306"
 migration_location = "migrations"
 
 [database_params]
