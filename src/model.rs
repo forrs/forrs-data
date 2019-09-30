@@ -1,19 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-#[cfg(any(
-    target_pointer_width = "64",
-    target_pointer_width = "128",
-    feature = "big-numbers"
-))]
-pub type Id = u64;
-#[cfg(not(any(
-    target_pointer_width = "64",
-    target_pointer_width = "128",
-    feature = "big-numbers"
-)))]
-pub type Id = u32;
-
-pub type DateTime = chrono::NaiveDateTime;
+pub type Id = i64;
+pub type DateTime = chrono::DateTime<chrono::Utc>;
 
 #[derive(Serialize, Deserialize)]
 pub struct User {
