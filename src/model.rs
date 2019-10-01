@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-pub type Id = i64;
+pub mod id;
+use id::*;
+
 pub type DateTime = chrono::DateTime<chrono::Utc>;
 
 #[derive(Serialize, Deserialize)]

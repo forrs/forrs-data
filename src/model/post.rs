@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Copy, Clone, PartialEq)]
 pub struct PostId {
     pub topic_id: Id,
-    pub id: u32,
+    pub id: Id,
 }
 #[derive(Serialize, Deserialize)]
 pub struct Post {
