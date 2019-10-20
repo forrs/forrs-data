@@ -6,11 +6,12 @@ edition = "2018"
 
 [features]
 default = []
-postgres = ["tokio-postgres"]
+postgres = ["tokio-postgres", "bytes"]
 big-numbers = []
 
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
-tokio-postgres = { version = "0.4.0-rc.3", default-features = false, features = ["with-chrono-0_4"], optional = true }
+tokio-postgres = { version = "0.5.0-alpha.1", default-features = false, features = ["with-chrono-0_4"], optional = true }
+bytes = { version = "*", optional = true }
 cfg-if = { version = "0.1" }

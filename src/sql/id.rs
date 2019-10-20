@@ -1,7 +1,7 @@
 use crate::model::id::*;
+use bytes::BytesMut;
 use std::error::Error;
-use tokio_postgres::to_sql_checked;
-use tokio_postgres::types::{FromSql, IsNull, ToSql, Type};
+use tokio_postgres::types::{to_sql_checked, FromSql, IsNull, ToSql, Type};
 
 impl From<Signed> for Id {
     fn from(v: Signed) -> Id {
@@ -34,7 +34,11 @@ impl<'a> FromSql<'a> for Id {
 }
 
 impl ToSql for Id {
-    fn to_sql(&self, ty: &Type, out: &mut Vec<u8>) -> Result<IsNull, Box<dyn Error + Sync + Send>> {
+    fn to_sql(
+        &self,
+        ty: &Type,
+        out: &mut BytesMut,
+    ) -> Result<IsNull, Box<dyn Error + Sync + Send>> {
         <Signed as ToSql>::to_sql(&Signed::from(*self), ty, out)
     }
     fn accepts(ty: &Type) -> bool {

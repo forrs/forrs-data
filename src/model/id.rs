@@ -8,9 +8,11 @@ cfg_if::cfg_if! {
         feature = "big-numbers"
     ))] {
         pub type Inner = u64;
+        #[cfg(feature = "postgres")]
         pub(crate) type Signed = i64;
     } else {
         pub type Inner = u32;
+        #[cfg(feature = "postgres")]
         pub(crate) type Signed = i32;
     }
 }

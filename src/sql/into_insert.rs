@@ -1,15 +1,26 @@
 use crate::model::User;
-use tokio_postgres::{impls::Prepare, types::ToSql, Client};
+use tokio_postgres::{types::ToSql, Statement, Error, Client};
 
-trait IntoInsert: Sized {
-    fn into_insert<'a>(&'a self, conn: &mut Client) -> (Prepare, Vec<&'a dyn ToSql>);
+#[allow(clippy::needless_lifetimes)]
+pub async fn into_insert<'a, T: IntoInsert>(
+    item: &'a T,
+    client: &mut Client
+) -> Result<(Statement, Vec<&'a dyn ToSql>), Error> {
+    let params = item.insert_params();
+    let stmt = client.prepare(T::insert_stmt()).await?;
+    Ok((stmt, params))
+}
+
+pub trait IntoInsert: Sized {
+    fn insert_stmt() -> &'static str;
+    fn insert_params<'a>(&'a self) -> Vec<&'a dyn ToSql>;
 }
 
 impl IntoInsert for User {
-    fn into_insert<'a>(&'a self, conn: &mut Client) -> (Prepare, Vec<&'a dyn ToSql>) {
-        (
-            conn.prepare(r#"INSERT INTO "User" (name, pw_hash) VALUES($1, $2)"#),
-            vec![&self.name, &self.pw_hash],
-        )
+    fn insert_stmt() -> &'static str {
+        r#"INSERT INTO "User" (name, pw_hash) VALUES($1, $2)"#
+    }
+    fn insert_params<'a>(&'a self) -> Vec<&'a dyn ToSql> {
+        vec![&self.name, &self.pw_hash]
     }
 }
