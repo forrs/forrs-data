@@ -8,6 +8,9 @@ We're currently using migrant cli for our database migrations; to install:
 
 Then, copy Migrant.example.toml to Migrant.toml and add your local database info.
 
+> Note: If you're on a 32-bit system and don't want to enable the big-numbers
+> feature, change `migrations_location` to `migrations-32` as well.
+
 Starting with a fresh database, run:
 
     migrant setup
