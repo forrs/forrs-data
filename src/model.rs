@@ -13,11 +13,31 @@ pub struct User {
     pub registered_at: DateTime,
     // TODO: More fields...
 }
+impl User {
+    pub fn new<T: Into<String>>(name: T, pw_hash: T) -> User {
+        User {
+            id: Id(0),
+            name: name.into(),
+            pw_hash: pw_hash.into(),
+            registered_at: chrono::Utc::now(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Category {
     pub id: Id,
     pub name: String,
 }
+impl Category {
+    pub fn new<T: Into<String>>(name: T) -> Category {
+        Category {
+            id: Id(0),
+            name: name.into(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Topic {
     pub id: Id,
