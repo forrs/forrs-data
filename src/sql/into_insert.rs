@@ -5,7 +5,7 @@ use tokio_postgres::{types::ToSql, Statement, Error, Client};
 pub async fn into_insert<'a, T: IntoInsert>(
     item: &'a T,
     client: &mut Client
-) -> Result<(Statement, Vec<&'a dyn ToSql>), Error> {
+) -> Result<(Statement, Vec<&'a (dyn ToSql + Send)>), Error> {
     let params = item.insert_params();
     let stmt = client.prepare(T::insert_stmt()).await?;
     Ok((stmt, params))
@@ -13,14 +13,14 @@ pub async fn into_insert<'a, T: IntoInsert>(
 
 pub trait IntoInsert: Sized {
     fn insert_stmt() -> &'static str;
-    fn insert_params<'a>(&'a self) -> Vec<&'a dyn ToSql>;
+    fn insert_params<'a>(&'a self) -> Vec<&'a (dyn ToSql + Send)>;
 }
 
 impl IntoInsert for User {
     fn insert_stmt() -> &'static str {
         r#"INSERT INTO "User" (name, pw_hash) VALUES($1, $2)"#
     }
-    fn insert_params<'a>(&'a self) -> Vec<&'a dyn ToSql> {
+    fn insert_params<'a>(&'a self) -> Vec<&'a (dyn ToSql + Send)> {
         vec![&self.name, &self.pw_hash]
     }
 }
@@ -29,7 +29,7 @@ impl IntoInsert for Category {
     fn insert_stmt() -> &'static str {
         "INSERT INTO Category (name) VALUES($1)"
     }
-    fn insert_params<'a>(&'a self) -> Vec<&'a dyn ToSql> {
+    fn insert_params<'a>(&'a self) -> Vec<&'a (dyn ToSql + Send)> {
         vec![&self.name]
     }
 }
