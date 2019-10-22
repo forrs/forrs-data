@@ -1,4 +1,8 @@
+mod id;
+
 mod from_row;
 pub use from_row::*;
-mod id;
-pub mod into_insert;
+mod into_insert;
+pub use into_insert::*;
+mod table;
+pub use table::*;

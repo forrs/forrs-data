@@ -1,7 +1,10 @@
-use crate::model::{Category, User};
-use tokio_postgres::{types::ToSql, Client, Error, Statement};
+use crate::{
+    model::{Category, User},
+    sql::Table,
+};
+use tokio_postgres::types::ToSql;
 
-pub trait IntoInsert: Sized {
+pub trait IntoInsert: Sized + Table {
     fn insert_stmt() -> &'static str;
     fn insert_params<'a>(&'a self) -> Vec<&'a (dyn ToSql + Sync)>;
 }
