@@ -1,0 +1,17 @@
+[package]
+name = "forrs-data"
+version = "0.0.2"
+authors = ["Follpvosten <wolfi@karpador.xyz>"]
+edition = "2018"
+
+[features]
+default = []
+postgres = ["tokio-postgres", "bytes"]
+big-numbers = []
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+tokio-postgres = { version = "0.5.0-alpha.1", default-features = false, features = ["with-chrono-0_4"], optional = true }
+bytes = { version = "*", optional = true }
+cfg-if = { version = "0.1" }
