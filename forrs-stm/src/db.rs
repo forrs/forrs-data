@@ -2,7 +2,7 @@ use futures::FutureExt;
 use serde::{Deserialize, Serialize};
 use tokio_postgres::{types::ToSql, Config as PGConfig, NoTls, ToStatement};
 
-use crate::{id::Id, Insert, Error, FromRow, IdField, SelectAll, SelectById};
+use crate::{id::Id, Error, FromRow, IdField, Insert, SelectAll, SelectById};
 
 /// Simple configuration struct for a [`Client`].
 #[derive(Serialize, Deserialize)]
@@ -112,7 +112,7 @@ impl Client {
     /// If such an item doesn't exist, `Ok(None)` is returned.
     pub async fn fetch_item_by_id<T>(&self, id: Id) -> Result<Option<T>, Error>
     where
-        T: FromRow + SelectById
+        T: FromRow + SelectById,
     {
         self.fetch_item_opt(T::SELECT_BY_ID, &[&id]).await
     }

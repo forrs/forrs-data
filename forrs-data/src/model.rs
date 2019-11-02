@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-
 use forrs_stm::id::Id;
+use serde::{Deserialize, Serialize};
 
 pub type DateTime = chrono::DateTime<chrono::Utc>;
 
