@@ -1,5 +1,5 @@
 mod model;
 pub use model::*;
 
-#[cfg(feature = "postgres")]
+#[cfg(feature = "db")]
 pub mod sql;

@@ -1,5 +1,7 @@
-use super::{DateTime, Id};
+use forrs_stm::id::Id;
 use serde::{Deserialize, Serialize};
+
+use super::DateTime;
 
 #[derive(Serialize, Deserialize, Copy, Clone, PartialEq)]
 pub struct PostId {

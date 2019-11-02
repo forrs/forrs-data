@@ -1,9 +1,6 @@
 use crate::model::*;
+use forrs_stm::FromRow;
 use tokio_postgres::{Error, Row};
-
-pub trait FromRow: Sized {
-    fn from_row(row: &Row) -> Result<Self, Error>;
-}
 
 impl FromRow for User {
     fn from_row(row: &Row) -> Result<Self, Error> {

@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-pub mod id;
-use id::*;
+use forrs_stm::id::Id;
 
 pub type DateTime = chrono::DateTime<chrono::Utc>;
 
@@ -16,7 +15,7 @@ pub struct User {
 impl User {
     pub fn new<T: Into<String>>(name: T, pw_hash: T) -> User {
         User {
-            id: Id(0),
+            id: Id::default(),
             name: name.into(),
             pw_hash: pw_hash.into(),
             registered_at: chrono::Utc::now(),
@@ -32,7 +31,7 @@ pub struct Category {
 impl Category {
     pub fn new<T: Into<String>>(name: T) -> Category {
         Category {
-            id: Id(0),
+            id: Id::default(),
             name: name.into(),
         }
     }

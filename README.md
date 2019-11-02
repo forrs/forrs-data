@@ -20,3 +20,9 @@ To add the `__migrant_migrations` table to your database, followed by:
     migrant apply --all
 
 To apply all available migrations.
+
+## Current state
+While I don't have the time to really document it right now, this is now a
+workspace; the `forrs-data` project is the actual data model, while
+`forrs-stm` is our "Struct Table Mapper", a strongly typed DB client, and
+the crate also contains traits for working with data from the db.

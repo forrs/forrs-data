@@ -1,0 +1,26 @@
+[package]
+name = "forrs-stm"
+version = "0.0.1"
+authors = ["Follpvosten <wolfi@karpador.xyz>"]
+edition = "2018"
+
+[features]
+default = []
+big-numbers = []
+with-rocket = ["rocket", "db"]
+db = ["tokio-postgres", "bytes", "tokio", "futures-preview"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+cfg-if = { version = "0.1" }
+
+tokio = { version = "0.2.0-alpha.6", optional = true }
+rocket = { git="https://github.com/SergioBenitez/Rocket.git", branch="async", optional = true }
+futures-preview = { version = "=0.3.0-alpha.19", features = ["async-await"], optional = true }
+bytes = { version = "*", optional = true }
+
+[dependencies.tokio-postgres]
+version = "0.5.0-alpha.1"
+default-features = false
+features = ["with-chrono-0_4", "runtime"]
+optional = true

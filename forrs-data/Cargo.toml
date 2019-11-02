@@ -6,12 +6,18 @@ edition = "2018"
 
 [features]
 default = []
-postgres = ["tokio-postgres", "bytes"]
 big-numbers = []
+db = ["tokio-postgres", "bytes", "forrs-stm/db"]
 
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
-tokio-postgres = { version = "0.5.0-alpha.1", default-features = false, features = ["with-chrono-0_4"], optional = true }
 bytes = { version = "*", optional = true }
 cfg-if = { version = "0.1" }
+forrs-stm = { path = "../forrs-stm" }
+
+[dependencies.tokio-postgres]
+version = "0.5.0-alpha.1"
+default-features = false
+features = ["with-chrono-0_4", "runtime"]
+optional = true

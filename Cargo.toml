@@ -2,4 +2,5 @@
 
 members = [
 	"forrs-data",
+	"forrs-stm",
 ]
