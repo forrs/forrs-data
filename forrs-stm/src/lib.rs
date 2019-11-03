@@ -6,7 +6,5 @@ cfg_if::cfg_if! {
 
         mod traits;
         pub use traits::*;
-        mod error;
-        pub use error::*;
     }
 }

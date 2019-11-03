@@ -1,8 +1,8 @@
 use futures::FutureExt;
 use serde::{Deserialize, Serialize};
-use tokio_postgres::{types::ToSql, Config as PGConfig, NoTls, ToStatement};
+use tokio_postgres::{types::ToSql, Config as PGConfig, Error, NoTls, ToStatement};
 
-use crate::{id::Id, Error, FromRow, IdField, Insert, SelectAll, SelectById};
+use crate::{id::Id, FromRow, IdField, Insert, SelectAll, SelectById};
 
 /// Simple configuration struct for a [`Client`].
 #[derive(Serialize, Deserialize)]
@@ -105,7 +105,6 @@ impl Client {
             .first()
             .map(|row| T::from_row(&row))
             .transpose()
-            .map_err(Error::from)
     }
 
     /// Attempts to fetch the item with the given Id from the database.
@@ -131,7 +130,7 @@ impl Client {
             .query(stmt, params)
             .await?
             .iter()
-            .map(|row| T::from_row(row).map_err(Error::from))
+            .map(|row| T::from_row(row))
             .collect()
     }
 
@@ -152,6 +151,5 @@ impl Client {
             .query(T::INSERT_STMT, &item.insert_params())
             .await
             .and_then(|rows| rows[0].try_get(T::ID_FIELD))
-            .map_err(Error::from)
     }
 }
