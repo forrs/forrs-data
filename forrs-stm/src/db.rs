@@ -32,10 +32,7 @@ pub struct Client {
 
 #[cfg(feature = "with-rocket")]
 mod rocket {
-    use crate::{
-        db::{Client, Config},
-        Error,
-    };
+    use crate::db::{Client, Config};
     use rocket::{
         http::Status,
         request::{FromRequestAsync, FromRequestFuture, Outcome, Request, State},
@@ -43,7 +40,7 @@ mod rocket {
     };
 
     impl<'a, 'r> FromRequestAsync<'a, 'r> for &'a Client {
-        type Error = Error;
+        type Error = String;
 
         fn from_request<'fut>(
             request: &'a Request<'r>,
@@ -54,14 +51,12 @@ mod rocket {
             Box::pin(async move {
                 let db_conf = try_outcome!(request.guard::<State<Config>>().map_failure(|_| (
                     Status::InternalServerError,
-                    Error::RocketConfig {
-                        message: "No managed db::Config found!".into()
-                    }
+                    "No managed db::Config found!".to_string()
                 )));
 
                 match request.local_cache_async(Client::connect(&*db_conf)).await {
                     Ok(s) => Outcome::Success(s),
-                    Err(e) => Outcome::Failure((Status::InternalServerError, e.clone())),
+                    Err(e) => Outcome::Failure((Status::InternalServerError, e.to_string())),
                 }
             })
         }
