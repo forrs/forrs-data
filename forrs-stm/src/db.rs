@@ -5,7 +5,7 @@ use tokio_postgres::{types::ToSql, Config as PGConfig, Error, NoTls, ToStatement
 use crate::{id::Id, FromRow, IdField, Insert, SelectAll, SelectById};
 
 /// Simple configuration struct for a [`Client`].
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub host: String,
     pub port: u16,

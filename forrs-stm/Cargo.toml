@@ -5,7 +5,7 @@ authors = ["Follpvosten <wolfi@karpador.xyz>"]
 edition = "2018"
 
 [features]
-default = ["db"]
+default = []
 big-numbers = []
 with-rocket = ["rocket", "db"]
 db = ["tokio-postgres", "bytes", "tokio", "futures-preview"]
